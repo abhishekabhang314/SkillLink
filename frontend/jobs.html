@@ -1,0 +1,484 @@
+<!-- frontend/jobs.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Jobs - SkillLink</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <i class="fas fa-link"></i>
+                    <span>SkillLink</span>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="jobs.html" class="nav-link active">View Jobs</a>
+                <!-- <a href="apply.html" class="nav-link">Apply Jobs</a> -->
+                <a href="employer.html" class="nav-link">Post Job</a>
+                <button id="connectWallet" class="btn-primary">
+                    <i class="fas fa-wallet"></i>
+                    Connect Wallet
+                </button>
+            </div>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Browse Jobs</span>
+                </div>
+                <h1>Available Opportunities</h1>
+                <p>Discover your next career move on the blockchain</p>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="search-section">
+                <div class="search-bar">
+                    <div class="search-input-container">
+                        <i class="fas fa-search"></i>
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="Search jobs by title, description, or skills..."
+                            autocomplete="off"
+                        >
+                    </div>
+                    <button class="search-btn" onclick="filterJobs()">
+                        <i class="fas fa-search"></i>
+                        Search
+                    </button>
+                </div>
+                
+                <div class="filter-options">
+                    <div class="filter-group">
+                        <label for="salaryFilter">
+                            <i class="fas fa-dollar-sign"></i>
+                            Salary Range
+                        </label>
+                        <select id="salaryFilter" onchange="filterJobs()">
+                            <option value="">All Salaries</option>
+                            <option value="0-50000">$0 - $50,000</option>
+                            <option value="50000-100000">$50,000 - $100,000</option>
+                            <option value="100000-150000">$100,000 - $150,000</option>
+                            <option value="150000-999999">$150,000+</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="sortBy">
+                            <i class="fas fa-sort"></i>
+                            Sort By
+                        </label>
+                        <select id="sortBy" onchange="sortJobs()">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="salary-high">Highest Salary</option>
+                            <option value="salary-low">Lowest Salary</option>
+                            <option value="applications">Most Applications</option>
+                        </select>
+                    </div>
+                    
+                    <button class="refresh-btn" onclick="loadJobs()" title="Refresh Jobs">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- Jobs Statistics -->
+            <div class="jobs-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="totalJobsCount">0</span>
+                        <span class="stat-label">Active Jobs</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="totalApplicationsCount">0</span>
+                        <span class="stat-label">Total Applications</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="newJobsToday">0</span>
+                        <span class="stat-label">New Today</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingJobs" class="loading-container">
+                <div class="loading-animation">
+                    <div class="ethereum-spinner">
+                        <i class="fab fa-ethereum"></i>
+                    </div>
+                    <h3>Loading Jobs from Blockchain</h3>
+                    <p>Fetching the latest opportunities...</p>
+                </div>
+            </div>
+
+            <!-- Jobs Container -->
+            <div id="jobsContainer" class="jobs-container" style="display: none;">
+                <!-- Jobs will be populated by JavaScript -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h3>No Jobs Found</h3>
+                <p>There are currently no jobs matching your criteria. Try adjusting your filters or check back later.</p>
+                <div class="empty-actions">
+                    <a href="employer.html" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Post the First Job
+                    </a>
+                    <button onclick="clearFilters()" class="btn-secondary">
+                        <i class="fas fa-filter"></i>
+                        Clear Filters
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Application Modal -->
+    <div id="applicationModal" class="modal">
+        <div class="modal-content application-modal">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <i class="fas fa-paper-plane"></i>
+                <h3>Apply for Position</h3>
+            </div>
+            <div class="modal-body">
+                <div class="job-summary" id="modalJobSummary">
+                    <!-- Job summary will be populated -->
+                </div>
+                <form id="applicationForm">
+                    <div class="form-group">
+                        <label for="resumeLink">
+                            <i class="fas fa-link"></i>
+                            Resume/Portfolio Link *
+                        </label>
+                        <input 
+                            type="url" 
+                            id="resumeLink" 
+                            name="resumeLink" 
+                            placeholder="https://your-portfolio.com or https://drive.google.com/..."
+                            required
+                        >
+                        <div class="field-info">
+                            <span>Provide a link to your resume, LinkedIn, or portfolio</span>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeApplicationModal()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Submit Application
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="nav-logo">
+                        <i class="fas fa-link"></i>
+                        <span>SkillLink</span>
+                    </div>
+                    <p>The Future of Hiring</p>
+                </div>
+                <div class="footer-links">
+                    <a href="jobs.html">Find Jobs</a>
+                    <a href="employer.html">Post Jobs</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SkillLink. Built on Ethereum.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.0/ethers.min.js"></script>
+    <script src="app.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+        let allJobs = [];
+        let filteredJobs = [];
+        let currentJobId = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadJobs();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Search input
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    filterJobs();
+                }
+            });
+
+            // Application modal
+            const modal = document.getElementById('applicationModal');
+            const closeBtn = modal.querySelector('.close');
+            
+            closeBtn.addEventListener('click', closeApplicationModal);
+            
+            window.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeApplicationModal();
+                }
+            });
+
+            // Application form
+            document.getElementById('applicationForm').addEventListener('submit', handleJobApplication);
+        }
+
+        function filterJobs() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const salaryFilter = document.getElementById('salaryFilter').value;
+            
+            filteredJobs = allJobs.filter(job => {
+                const matchesSearch = job.title.toLowerCase().includes(searchTerm) || 
+                                    job.description.toLowerCase().includes(searchTerm);
+                
+                let matchesSalary = true;
+                if (salaryFilter) {
+                    const [min, max] = salaryFilter.split('-').map(Number);
+                    const jobSalary = Number(job.salary);
+                    matchesSalary = jobSalary >= min && jobSalary <= (max || Infinity);
+                }
+                
+                return matchesSearch && matchesSalary && job.isActive;
+            });
+
+            sortJobs();
+        }
+
+        function sortJobs() {
+            const sortBy = document.getElementById('sortBy').value;
+            
+            filteredJobs.sort((a, b) => {
+                switch (sortBy) {
+                    case 'newest':
+                        return Number(b.timestamp) - Number(a.timestamp);
+                    case 'oldest':
+                        return Number(a.timestamp) - Number(b.timestamp);
+                    case 'salary-high':
+                        return Number(b.salary) - Number(a.salary);
+                    case 'salary-low':
+                        return Number(a.salary) - Number(b.salary);
+                    case 'applications':
+                        return Number(b.applicantCount) - Number(a.applicantCount);
+                    default:
+                        return 0;
+                }
+            });
+
+            renderJobs();
+        }
+
+        function renderJobs() {
+            const container = document.getElementById('jobsContainer');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (filteredJobs.length === 0) {
+                container.style.display = 'none';
+                emptyState.style.display = 'flex';
+                return;
+            }
+            
+            container.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            container.innerHTML = filteredJobs.map(job => `
+                <div class="job-card" data-job-id="${job.id}">
+                    <div class="job-header">
+                        <div class="job-title-section">
+                            <h3 class="job-title">${job.title}</h3>
+                            <div class="job-meta">
+                                <span class="salary">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    ${Number(job.salary).toLocaleString()}/year
+                                </span>
+                                <span class="posted-date">
+                                    <i class="fas fa-clock"></i>
+                                    ${formatDate(job.timestamp)}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="job-status">
+                            <span class="status-badge ${job.isActive ? 'active' : 'closed'}">
+                                ${job.isActive ? 'Active' : 'Closed'}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="job-description">
+                        <p>${truncateText(job.description, 150)}</p>
+                    </div>
+                    
+                    <div class="job-footer">
+                        <div class="job-info">
+                            <span class="employer">
+                                <i class="fas fa-building"></i>
+                                ${formatAddress(job.employer)}
+                            </span>
+                            <span class="applicants">
+                                <i class="fas fa-users"></i>
+                                ${job.applicantCount} applicant${job.applicantCount !== '1' ? 's' : ''}
+                            </span>
+                        </div>
+                        <div class="job-actions">
+                            <button class="btn-outline" onclick="viewJobDetails(${job.id})">
+                                <i class="fas fa-eye"></i>
+                                View Details
+                            </button>
+                            <button class="btn-primary ${!job.isActive ? 'disabled' : ''}" 
+                                    onclick="openApplicationModal(${job.id})"
+                                    ${!job.isActive ? 'disabled' : ''}>
+                                <i class="fas fa-paper-plane"></i>
+                                Apply Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openApplicationModal(jobId) {
+            const job = allJobs.find(j => j.id === jobId);
+            if (!job || !job.isActive) return;
+            
+            currentJobId = jobId;
+            
+            document.getElementById('modalJobSummary').innerHTML = `
+                <h4>${job.title}</h4>
+                <p class="modal-salary">${Number(job.salary).toLocaleString()}/year</p>
+                <p class="modal-employer">Employer: ${formatAddress(job.employer)}</p>
+            `;
+            
+            document.getElementById('applicationModal').style.display = 'block';
+            document.getElementById('resumeLink').value = '';
+        }
+
+        function closeApplicationModal() {
+            document.getElementById('applicationModal').style.display = 'none';
+            currentJobId = null;
+        }
+
+        function viewJobDetails(jobId) {
+            const job = allJobs.find(j => j.id === jobId);
+            if (!job) return;
+            
+            alert(`Job Details:\n\nTitle: ${job.title}\nSalary: ${Number(job.salary).toLocaleString()}\nEmployer: ${job.employer}\nPosted: ${formatDate(job.timestamp)}\nApplications: ${job.applicantCount}\n\nDescription:\n${job.description}`);
+        }
+
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('salaryFilter').value = '';
+            document.getElementById('sortBy').value = 'newest';
+            filteredJobs = [...allJobs];
+            sortJobs();
+        }
+
+        function formatDate(timestamp) {
+            const date = new Date(Number(timestamp) * 1000);
+            const now = new Date();
+            const diff = now - date;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            
+            if (days === 0) return 'Today';
+            if (days === 1) return 'Yesterday';
+            if (days < 7) return `${days} days ago`;
+            if (days < 30) return `${Math.floor(days / 7)} weeks ago`;
+            return date.toLocaleDateString();
+        }
+
+        function formatAddress(address) {
+            return `${address.slice(0, 6)}...${address.slice(-4)}`;
+        }
+
+        function truncateText(text, maxLength) {
+            if (text.length <= maxLength) return text;
+            return text.slice(0, maxLength) + '...';
+        }
+
+        function updateJobStats() {
+            const totalJobs = allJobs.filter(job => job.isActive).length;
+            const totalApplications = allJobs.reduce((sum, job) => sum + Number(job.applicantCount), 0);
+            const today = Math.floor(Date.now() / 1000) - 24 * 60 * 60; // 24 hours ago
+            const newToday = allJobs.filter(job => Number(job.timestamp) > today).length;
+
+            document.getElementById('totalJobsCount').textContent = totalJobs;
+            document.getElementById('totalApplicationsCount').textContent = totalApplications;
+            document.getElementById('newJobsToday').textContent = newToday;
+        }
+
+        // Override the loadJobs function to update UI
+        const originalLoadJobs = window.loadJobs;
+        window.loadJobs = async function() {
+            document.getElementById('loadingJobs').style.display = 'flex';
+            document.getElementById('jobsContainer').style.display = 'none';
+            document.getElementById('emptyState').style.display = 'none';
+            
+            try {
+                await originalLoadJobs();
+                allJobs = window.jobsData || [];
+                filteredJobs = [...allJobs];
+                
+                updateJobStats();
+                sortJobs();
+                
+                document.getElementById('loadingJobs').style.display = 'none';
+            } catch (error) {
+                console.error('Error loading jobs:', error);
+                document.getElementById('loadingJobs').style.display = 'none';
+                document.getElementById('emptyState').style.display = 'flex';
+            }
+        };
+    </script>
+</body>
+</html>

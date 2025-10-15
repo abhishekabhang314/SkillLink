@@ -1,0 +1,276 @@
+<!-- frontend/employer.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post a Job - SkillLink</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <i class="fas fa-link"></i>
+                    <span>SkillLink</span>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="jobs.html" class="nav-link">View Jobs</a>
+                <!-- <a href="apply.html" class="nav-link">Apply Jobs</a> -->
+                <a href="employer.html" class="nav-link active">Post Job</a>
+                <button id="connectWallet" class="btn-primary">
+                    <i class="fas fa-wallet"></i>
+                    Connect Wallet
+                </button>
+            </div>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Post Job</span>
+                </div>
+                <h1>Post a New Job</h1>
+                <p>Reach talented professionals on the blockchain</p>
+            </div>
+
+            <div class="job-form-container">
+                <div class="form-sidebar">
+                    <div class="sidebar-card">
+                        <h3><i class="fas fa-info-circle"></i> Posting Guidelines</h3>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Write a clear, descriptive job title</li>
+                            <li><i class="fas fa-check"></i> Include detailed job requirements</li>
+                            <li><i class="fas fa-check"></i> Specify salary range transparently</li>
+                            <li><i class="fas fa-check"></i> Mention remote/location preferences</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-card">
+                        <h3><i class="fas fa-ethereum"></i> Blockchain Benefits</h3>
+                        <ul>
+                            <li><i class="fas fa-shield-alt"></i> Immutable job records</li>
+                            <li><i class="fas fa-eye"></i> Transparent hiring process</li>
+                            <li><i class="fas fa-users"></i> Direct candidate interaction</li>
+                            <li><i class="fas fa-coins"></i> No platform fees</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="job-form-main">
+                    <div class="form-card">
+                        <div class="form-header">
+                            <h2><i class="fas fa-briefcase"></i> Job Details</h2>
+                            <p>Fill out the information below to post your job on the blockchain</p>
+                        </div>
+
+                        <form id="jobForm" class="job-form">
+                            <div class="form-group">
+                                <label for="jobTitle">
+                                    <i class="fas fa-heading"></i>
+                                    Job Title *
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="jobTitle" 
+                                    name="jobTitle" 
+                                    placeholder="e.g. Senior Frontend Developer"
+                                    required
+                                    maxlength="100"
+                                >
+                                <div class="field-info">
+                                    <span>Make it specific and compelling</span>
+                                    <span class="char-count">0/100</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="jobDescription">
+                                    <i class="fas fa-align-left"></i>
+                                    Job Description *
+                                </label>
+                                <textarea 
+                                    id="jobDescription" 
+                                    name="jobDescription" 
+                                    rows="8"
+                                    placeholder="Describe the role, responsibilities, requirements, and what makes this opportunity exciting..."
+                                    required
+                                    maxlength="2000"
+                                ></textarea>
+                                <div class="field-info">
+                                    <span>Include skills, experience, and benefits</span>
+                                    <span class="char-count">0/2000</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="jobSalary">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    Annual Salary (USD) *
+                                </label>
+                                <div class="salary-input">
+                                    <span class="currency">$</span>
+                                    <input 
+                                        type="number" 
+                                        id="jobSalary" 
+                                        name="jobSalary" 
+                                        placeholder="e.g. 75000"
+                                        required
+                                        min="1"
+                                        max="1000000"
+                                    >
+                                </div>
+                                <div class="field-info">
+                                    <span>Be transparent about compensation</span>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" onclick="clearForm()">
+                                    <i class="fas fa-undo"></i>
+                                    Clear Form
+                                </button>
+                                <button type="submit" class="btn-primary btn-large" id="submitJob">
+                                    <i class="fas fa-rocket"></i>
+                                    Post Job on Blockchain
+                                </button>
+                            </div>
+
+                            <div class="form-footer">
+                                <p><i class="fas fa-info-circle"></i> 
+                                By posting this job, it will be permanently recorded on the Ethereum blockchain. 
+                                Make sure all information is accurate before submitting.</p>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Transaction Status -->
+                    <div id="transactionStatus" class="transaction-status" style="display: none;">
+                        <div class="status-content">
+                            <div class="status-icon">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                            <div class="status-text">
+                                <h3>Processing Transaction...</h3>
+                                <p>Please confirm the transaction in your wallet and wait for blockchain confirmation.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Success Message -->
+                    <div id="successMessage" class="success-message" style="display: none;">
+                        <div class="success-content">
+                            <div class="success-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="success-text">
+                                <h3>Job Posted Successfully!</h3>
+                                <p>Your job has been posted on the blockchain and is now visible to candidates.</p>
+                                <div class="success-actions">
+                                    <a href="jobs.html" class="btn-primary">View All Jobs</a>
+                                    <button onclick="resetForm()" class="btn-secondary">Post Another Job</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="nav-logo">
+                        <i class="fas fa-link"></i>
+                        <span>SkillLink</span>
+                    </div>
+                    <p>The Future of Hiring</p>
+                </div>
+                <div class="footer-links">
+                    <a href="jobs.html">Find Jobs</a>
+                    <a href="employer.html">Post Jobs</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SkillLink. Built on Ethereum.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="modal">
+        <div class="modal-content loading-modal">
+            <div class="loading-animation">
+                <div class="ethereum-logo">
+                    <i class="fab fa-ethereum"></i>
+                </div>
+                <div class="loading-text">
+                    <h3>Broadcasting to Blockchain</h3>
+                    <p>Please confirm the transaction in your wallet...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.0/ethers.min.js"></script>
+    <script src="app.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Character count functionality
+        document.getElementById('jobTitle').addEventListener('input', function() {
+            updateCharCount('jobTitle', 100);
+        });
+
+        document.getElementById('jobDescription').addEventListener('input', function() {
+            updateCharCount('jobDescription', 2000);
+        });
+
+        function updateCharCount(fieldId, maxLength) {
+            const field = document.getElementById(fieldId);
+            const charCount = field.parentElement.querySelector('.char-count');
+            const currentLength = field.value.length;
+            charCount.textContent = `${currentLength}/${maxLength}`;
+            
+            if (currentLength > maxLength * 0.9) {
+                charCount.style.color = '#f56565';
+            } else {
+                charCount.style.color = '#718096';
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('jobForm').reset();
+            document.querySelectorAll('.char-count').forEach(count => {
+                count.textContent = '0/' + count.textContent.split('/')[1];
+                count.style.color = '#718096';
+            });
+        }
+
+        function resetForm() {
+            clearForm();
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('transactionStatus').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

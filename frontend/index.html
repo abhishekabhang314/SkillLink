@@ -1,0 +1,222 @@
+<!-- frontend/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillLink - The Future of Hiring</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">                
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-link"></i>
+                <span>SkillLink</span>
+            </div>
+            <div class="nav-menu">
+                <a href="jobs.html" class="nav-link">View Jobs</a>
+                <a href="employer.html" class="nav-link">Post Job</a>
+                <button id="connectWallet" class="btn-primary">
+                    <i class="fas fa-wallet"></i>
+                    Connect Wallet
+                </button>              
+            </div>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        The Future of <span class="gradient-text">Hiring</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Connect talented professionals with innovative companies on the blockchain. 
+                        Experience decentralized, transparent, and secure job matching.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="jobs.html" class="btn-primary btn-large">
+                            <i class="fas fa-search"></i>
+                            Find Jobs
+                        </a>
+                        <a href="employer.html" class="btn-secondary btn-large">
+                            <i class="fas fa-plus"></i>
+                            Post a Job
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number" id="totalJobs">0</span>
+                            <span class="stat-label">Active Jobs</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" id="totalApplications">0</span>
+                            <span class="stat-label">Applications</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Decentralized</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="hero-card">
+                        <div class="card-header">
+                            <div class="avatar"></div>
+                            <div class="card-info">
+                                <div class="card-title">Senior Developer</div>
+                                <div class="card-company">Tech Corp</div>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="salary">$120,000/year</div>
+                            <div class="location">Remote</div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="apply-btn">Apply Now</button>
+                        </div>
+                    </div>
+                    
+                    <div class="floating-elements">
+                        <div class="floating-element" style="top: 20px; right: 20px;">
+                            <i class="fab fa-ethereum"></i>
+                        </div>
+                        <div class="floating-element" style="bottom: 40px; left: 10px;">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="floating-element" style="top: 50%; right: -10px;">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose SkillLink?</h2>
+                <p>Experience the next generation of job portals powered by blockchain technology</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure & Transparent</h3>
+                    <p>All job postings and applications are stored on the blockchain, ensuring complete transparency and immutability.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3>No Hidden Fees</h3>
+                    <p>Direct peer-to-peer interactions eliminate middlemen and reduce costs for both employers and job seekers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Global Access</h3>
+                    <p>Connect with opportunities worldwide without geographical restrictions or intermediary barriers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <h3>Verified Profiles</h3>
+                    <p>Blockchain-based identity verification ensures authentic employer and candidate profiles.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>How It Works</h2>
+                <p>Simple steps to get started with decentralized hiring</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Connect Your Wallet</h3>
+                        <p>Link your MetaMask wallet to interact with the SkillLink platform securely.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Browse or Post Jobs</h3>
+                        <p>Explore available opportunities or post your job requirements on the blockchain.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Apply Directly</h3>
+                        <p>Submit applications directly to employers through smart contracts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="nav-logo">
+                        <i class="fas fa-link"></i>
+                        <span>SkillLink</span>
+                    </div>
+                    <p>The Future of Hiring</p>
+                </div>
+                <div class="footer-links">
+                    <a href="jobs.html">Find Jobs</a>
+                    <a href="employer.html">Post Jobs</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SkillLink. Built on Ethereum.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Wallet Status Modal -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <i class="fas fa-wallet"></i>
+                <h3>Wallet Status</h3>
+            </div>
+            <div id="walletInfo" class="wallet-info">
+                <!-- Wallet info will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.0/ethers.min.js"></script>
+    <script src="app.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="app.js"></script>
+
+</body>
+</html>
