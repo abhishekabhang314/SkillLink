@@ -244,7 +244,7 @@
     <script>
         let allJobs = [];
         let filteredJobs = [];
-        let currentJobId = null;
+        window.currentJobId = null;
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
@@ -389,24 +389,25 @@
         }
 
         function openApplicationModal(jobId) {
-            const job = allJobs.find(j => j.id === jobId);
-            if (!job || !job.isActive) return;
-            
-            currentJobId = jobId;
-            
-            document.getElementById('modalJobSummary').innerHTML = `
-                <h4>${job.title}</h4>
-                <p class="modal-salary">${Number(job.salary).toLocaleString()}/year</p>
-                <p class="modal-employer">Employer: ${formatAddress(job.employer)}</p>
-            `;
-            
-            document.getElementById('applicationModal').style.display = 'block';
-            document.getElementById('resumeLink').value = '';
-        }
+    // Use == for loose equality to match string "1" and number 1
+    const job = allJobs.find(j => j.id == jobId); 
+    if (!job || !job.isActive) return;
+ 
+    window.currentJobId = jobId; 
+    
+    document.getElementById('modalJobSummary').innerHTML = `
+        <h4>${job.title}</h4>
+        <p class="modal-salary">${Number(job.salary).toLocaleString()}/year</p>
+        <p class="modal-employer">Employer: ${formatAddress(job.employer)}</p>
+    `;
+    
+    document.getElementById('applicationModal').style.display = 'block';
+    document.getElementById('resumeLink').value = '';
+}
 
         function closeApplicationModal() {
             document.getElementById('applicationModal').style.display = 'none';
-            currentJobId = null;
+            window.currentJobId = null;
         }
 
         function viewJobDetails(jobId) {
