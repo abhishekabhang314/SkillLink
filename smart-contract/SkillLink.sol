@@ -9,14 +9,15 @@ contract SkillLink {
         uint256 salary;
         address employer;
         bool isActive;
-        uint256 createdAt;
+        uint256 applicantCount; 
+        uint256 timestamp;      
     }
     
     struct Application {
         uint256 jobId;
         address applicant;
         string resumeLink;
-        uint256 appliedAt;
+        uint256 timestamp; 
         bool isActive;
     }
     
@@ -34,18 +35,15 @@ contract SkillLink {
         address indexed employer,
         uint256 salary
     );
-    
     event JobApplicationSubmitted(
         uint256 indexed jobId,
         address indexed applicant,
         string resumeLink
     );
-    
     event JobStatusUpdated(
         uint256 indexed jobId,
         bool isActive
     );
-    
     modifier onlyEmployer(uint256 _jobId) {
         require(jobs[_jobId].employer == msg.sender, "Only job employer can perform this action");
         _;
@@ -71,7 +69,6 @@ contract SkillLink {
         require(_salary > 0, "Salary must be greater than 0");
         
         jobCounter++;
-        
         jobs[jobCounter] = Job({
             id: jobCounter,
             title: _title,
@@ -79,7 +76,8 @@ contract SkillLink {
             salary: _salary,
             employer: msg.sender,
             isActive: true,
-            createdAt: block.timestamp
+            applicantCount: 0, 
+            timestamp: block.timestamp
         });
         
         employerJobs[msg.sender].push(jobCounter);
@@ -94,23 +92,22 @@ contract SkillLink {
     {
         require(bytes(_resumeLink).length > 0, "Resume link cannot be empty");
         require(jobs[_jobId].employer != msg.sender, "Employer cannot apply to their own job");
-        
         // Check if user already applied
-        Application[] memory applications = jobApplications[_jobId];
+        Application[] storage applications = jobApplications[_jobId];
         for (uint i = 0; i < applications.length; i++) {
             require(applications[i].applicant != msg.sender, "Already applied to this job");
         }
         
-        applicationCounter++;
+        jobs[_jobId].applicantCount++;
         
+        applicationCounter++;
         Application memory newApplication = Application({
             jobId: _jobId,
             applicant: msg.sender,
             resumeLink: _resumeLink,
-            appliedAt: block.timestamp,
+            timestamp: block.timestamp,
             isActive: true
         });
-        
         jobApplications[_jobId].push(newApplication);
         applicantApplications[msg.sender].push(_jobId);
         
@@ -127,7 +124,6 @@ contract SkillLink {
     
     function getActiveJobs() external view returns (Job[] memory) {
         uint256 activeJobCount = 0;
-        
         // Count active jobs
         for (uint256 i = 1; i <= jobCounter; i++) {
             if (jobs[i].isActive) {

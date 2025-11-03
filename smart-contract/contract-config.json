@@ -1,5 +1,5 @@
 {
-    "contractAddress": "0xB9899374d17Ca85366a3f10487b8a8AFe2085A3A",
+    "contractAddress": "0x06F0fF0e1a8F2Fc5bA6cd55a93f05e60Fd93459D",
     "network": "sepolia",
     "chainId": 11155111,
     "abi": [
@@ -17,19 +17,6 @@
                 }
             ],
             "name": "applyJob",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "_jobId",
-                    "type": "uint256"
-                }
-            ],
-            "name": "closeJob",
             "outputs": [],
             "stateMutability": "nonpayable",
             "type": "function"
@@ -69,25 +56,6 @@
                     "type": "uint256"
                 },
                 {
-                    "indexed": true,
-                    "internalType": "address",
-                    "name": "employer",
-                    "type": "address"
-                }
-            ],
-            "name": "JobClosed",
-            "type": "event"
-        },
-        {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": true,
-                    "internalType": "uint256",
-                    "name": "jobId",
-                    "type": "uint256"
-                },
-                {
                     "indexed": false,
                     "internalType": "string",
                     "name": "title",
@@ -107,6 +75,25 @@
                 }
             ],
             "name": "JobPosted",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "uint256",
+                    "name": "jobId",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "bool",
+                    "name": "isActive",
+                    "type": "bool"
+                }
+            ],
+            "name": "JobStatusUpdated",
             "type": "event"
         },
         {
@@ -135,6 +122,19 @@
         {
             "inputs": [
                 {
+                    "internalType": "uint256",
+                    "name": "_jobId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "toggleJobStatus",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
                     "internalType": "address",
                     "name": "",
                     "type": "address"
@@ -145,7 +145,7 @@
                     "type": "uint256"
                 }
             ],
-            "name": "applicantJobs",
+            "name": "applicantApplications",
             "outputs": [
                 {
                     "internalType": "uint256",
@@ -311,7 +311,7 @@
                     "type": "address"
                 }
             ],
-            "name": "getApplicantJobs",
+            "name": "getApplicantApplications",
             "outputs": [
                 {
                     "internalType": "uint256[]",
@@ -352,43 +352,69 @@
             "name": "getJob",
             "outputs": [
                 {
+                    "components": [
+                        {
+                            "internalType": "uint256",
+                            "name": "id",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "title",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "description",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "salary",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "address",
+                            "name": "employer",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "bool",
+                            "name": "isActive",
+                            "type": "bool"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "applicantCount",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "timestamp",
+                            "type": "uint256"
+                        }
+                    ],
+                    "internalType": "struct SkillLink.Job",
+                    "name": "",
+                    "type": "tuple"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
                     "internalType": "uint256",
-                    "name": "id",
+                    "name": "_jobId",
                     "type": "uint256"
-                },
-                {
-                    "internalType": "string",
-                    "name": "title",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "description",
-                    "type": "string"
-                },
+                }
+            ],
+            "name": "getJobApplicationCount",
+            "outputs": [
                 {
                     "internalType": "uint256",
-                    "name": "salary",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "address",
-                    "name": "employer",
-                    "type": "address"
-                },
-                {
-                    "internalType": "bool",
-                    "name": "isActive",
-                    "type": "bool"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "applicantCount",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "timestamp",
+                    "name": "",
                     "type": "uint256"
                 }
             ],
