@@ -673,13 +673,33 @@ function setupEventListeners() {
             event.target.style.display = 'none';
         }
     });
+
+    // Mobile menu toggle
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    
+    if (mobileToggle) {
+        mobileToggle.addEventListener('click', () => {
+            document.body.classList.toggle('nav-open');
+        });
+    }
+
+    // Close mobile menu when a nav-link is clicked
+    const navMenu = document.querySelector('.nav-menu');
+    if (navMenu) {
+        navMenu.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.body.classList.remove('nav-open');
+            });
+        });
+    }
 }
 
 // Wallet Functions
 async function connectWallet() {
     try {
         if (typeof window.ethereum === 'undefined') {
-            alert('Please install MetaMask to use this application!');
+            window.open('https://metamask.io/download', '_blank');
+            // alert('Please install MetaMask to use this application!');
             return;
         }
 

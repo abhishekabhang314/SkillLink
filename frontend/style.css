@@ -1807,11 +1807,57 @@ h4 { font-size: 1.25rem; }
     }
     
     .nav-menu {
-        display: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        position: fixed;
+        top: 70px; /* Assuming 70px navbar height */
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background: var(--bg-primary);
+    
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        padding: 2rem;
+    }
+    
+    body.nav-open .nav-menu {
+        transform: translateX(0);
+        z-index: 900; /* To Ensure it's above content */
+    }
+    
+    .nav-menu .nav-link {
+        font-size: 1.5rem; 
+    }
+    
+    .nav-menu .btn-primary {
+        font-size: 1.25rem; 
+        padding: 1rem 1.5rem;
     }
     
     .mobile-menu-toggle {
         display: block;
+        z-index: 901;
+    }
+    
+    .mobile-menu-toggle .icon-close {
+        display: none;
+    }
+    
+    body.nav-open .mobile-menu-toggle .icon-bars {
+        display: none;
+    }
+    
+    body.nav-open .mobile-menu-toggle .icon-close {
+        display: block;
+    }
+    
+    /* To Prevent background scrolling when menu is open */
+    body.nav-open {
+        overflow: hidden;
     }
     
     .hero-content {
