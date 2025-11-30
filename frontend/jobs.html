@@ -291,10 +291,10 @@
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
             loadJobs();
-            setupEventListeners();
+            setupJobsPageListeners();
         });
 
-        function setupEventListeners() {
+        function setupJobsPageListeners() {
     // Mobile menu toggle
     const mobileToggle = document.querySelector('.mobile-menu-toggle');
     if (mobileToggle) {
@@ -330,8 +330,8 @@
             const detailsCloseIcon = document.getElementById('detailsModalClose');
             const detailsCloseBtn = document.getElementById('detailsModalCloseBtn');
 
-            detailsCloseIcon.addEventListener('click', closeJobDetailsModal);
-            detailsCloseBtn.addEventListener('click', closeJobDetailsModal);
+            if(detailsCloseIcon) detailsCloseIcon.addEventListener('click', closeJobDetailsModal);
+            if(detailsCloseBtn) detailsCloseBtn.addEventListener('click', closeJobDetailsModal);
 
             window.addEventListener('click', function(e) {
                 if (e.target === appModal) {
@@ -343,7 +343,9 @@
             });
 
             // Application form
-            document.getElementById('applicationForm').addEventListener('submit', handleJobApplication);
+            // document.getElementById('applicationForm').addEventListener('submit', handleJobApplication);
+            const appForm = document.getElementById('applicationForm');
+            if(appForm) appForm.addEventListener('submit', handleJobApplication);
         }
 
         function filterJobs() {
