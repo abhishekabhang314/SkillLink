@@ -2086,3 +2086,150 @@ h4 { font-size: 1.25rem; }
 [data-theme="dark"] .applicant-address {
     color: var(--text-secondary);
 }
+
+/* Application Toggle Styles */
+.submission-toggle {
+    display: flex;
+    gap: 1rem;
+    background: var(--bg-secondary);
+    padding: 0.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.toggle-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.toggle-option input {
+    display: none;
+}
+
+.toggle-option:hover {
+    background: rgba(37, 99, 235, 0.05);
+}
+
+.toggle-option.active {
+    background: var(--bg-primary);
+    color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+}
+
+/* File Upload Styles */
+.file-upload-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.file-upload-wrapper input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.file-upload-box {
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    text-align: center;
+    background: var(--bg-primary);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.file-upload-wrapper:hover .file-upload-box {
+    border-color: var(--primary-color);
+    background: rgba(37, 99, 235, 0.02);
+}
+
+.file-upload-box i {
+    font-size: 2rem;
+    color: var(--text-muted);
+}
+
+.file-upload-box .file-name {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+[data-theme="dark"] .toggle-option.active {
+    background: var(--bg-secondary);
+    border-color: var(--primary-color);
+    box-shadow: var(--glow-primary);
+}
+
+/* Fix Modal Scrolling */
+.modal-content {
+    max-height: 80vh; /* Limit height to 80% of screen */
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-body {
+    overflow-y: auto; /* Scroll ONLY the body content */
+    padding: 1.5rem 2rem;
+    flex: 1; /* Take up remaining space */
+}
+
+/* Ensure header and footer stay fixed */
+.modal-header, .modal-footer {
+    flex-shrink: 0;
+}
+
+/* File Remove Button Styles */
+.file-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 0.5rem;
+    position: relative;
+    z-index: 10; /* Lifts this row above the file input layer */
+}
+
+.file-name.has-file {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.remove-file-btn {
+    background: none;
+    border: none;
+    color: var(--error-color);
+    cursor: pointer;
+    font-size: 0.5rem;
+    padding: 0;
+    transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.remove-file-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Update Existing File Upload Wrapper */
+/* We need to ensure the input doesn't block the remove button */
+.file-upload-wrapper input[type="file"] {
+    /* The input covers the whole box, BUT z-index logic in .file-status-row handles the clicks */
+    z-index: 1; 
+}

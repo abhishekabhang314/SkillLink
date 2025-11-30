@@ -224,6 +224,20 @@
                 </div>
                 <form id="applicationForm">
                     <div class="form-group">
+                        <label>Submission Method</label>
+                        <div class="submission-toggle">
+                            <label class="toggle-option active">
+                                <input type="radio" name="submissionType" value="link" checked onchange="toggleSubmissionMethod(this.value)">
+                                <i class="fas fa-link"></i> Link
+                            </label>
+                            <label class="toggle-option">
+                                <input type="radio" name="submissionType" value="file" onchange="toggleSubmissionMethod(this.value)">
+                                <i class="fas fa-file-upload"></i> Upload File
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="linkInputGroup">
                         <label for="resumeLink">
                             <i class="fas fa-link"></i>
                             Resume/Portfolio Link *
@@ -233,12 +247,40 @@
                             id="resumeLink" 
                             name="resumeLink" 
                             placeholder="https://your-portfolio.com or https://drive.google.com/..."
-                            required
                         >
                         <div class="field-info">
                             <span>Provide a link to your resume, LinkedIn, or portfolio</span>
                         </div>
                     </div>
+
+                    <div class="form-group" id="fileInputGroup" style="display: none;">
+                        <label for="resumeFile">
+                            <i class="fas fa-file-alt"></i>
+                            Attach Resume (PDF/DOC) *
+                        </label>
+                        <div class="file-upload-wrapper">
+                            <input 
+                                type="file" 
+                                id="resumeFile" 
+                                name="resumeFile" 
+                                accept=".pdf,.doc,.docx"
+                            >
+                            <div class="file-upload-box">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to browse or drag file here</p>
+                                <div class="file-status-row">
+                                    <span class="file-name" id="fileNameDisplay">No file selected</span>
+                                    <button type="button" id="removeFileBtn" class="remove-file-btn" style="display: none;">
+                                        <i class="fas fa-times-circle"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field-info">
+                            <span>File will be securely linked to your application</span>
+                        </div>
+                    </div>
+
                     <div class="form-actions">
                         <button type="button" class="btn-secondary" onclick="closeApplicationModal()">
                             Cancel
@@ -292,6 +334,67 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadJobs();
             setupJobsPageListeners();
+        });
+
+        function toggleSubmissionMethod(method) {
+            const linkGroup = document.getElementById('linkInputGroup');
+            const fileGroup = document.getElementById('fileInputGroup');
+            const linkInput = document.getElementById('resumeLink');
+            const fileInput = document.getElementById('resumeFile');
+            const options = document.querySelectorAll('.toggle-option');
+
+            // Update UI classes
+            options.forEach(opt => {
+                const radio = opt.querySelector('input');
+                if (radio.value === method) {
+                    opt.classList.add('active');
+                } else {
+                    opt.classList.remove('active');
+                }
+            });
+
+            // Toggle Visibility and Required attributes
+            if (method === 'link') {
+                linkGroup.style.display = 'flex';
+                fileGroup.style.display = 'none';
+                linkInput.setAttribute('required', 'true');
+                fileInput.removeAttribute('required');
+            } else {
+                linkGroup.style.display = 'none';
+                fileGroup.style.display = 'flex';
+                linkInput.removeAttribute('required');
+                fileInput.setAttribute('required', 'true');
+            }
+        }
+
+        // File handling logic with Remove feature
+        document.addEventListener('DOMContentLoaded', () => {
+             const fileInput = document.getElementById('resumeFile');
+             const removeBtn = document.getElementById('removeFileBtn');
+             const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+             if(fileInput && removeBtn && fileNameDisplay) {
+                 // Handle File Select
+                 fileInput.addEventListener('change', function(e) {
+                     if (e.target.files[0]) {
+                         fileNameDisplay.textContent = e.target.files[0].name;
+                         fileNameDisplay.classList.add('has-file'); // Add color style
+                         removeBtn.style.display = 'inline-block';
+                     }
+                 });
+
+                 // Handle Remove File
+                 removeBtn.addEventListener('click', function(e) {
+                     e.preventDefault(); 
+                     // This stops the click from triggering the file input behind the button
+                     e.stopPropagation(); // Critical!
+                     
+                     fileInput.value = ''; // Clear the input
+                     fileNameDisplay.textContent = 'No file selected';
+                     fileNameDisplay.classList.remove('has-file');
+                     removeBtn.style.display = 'none';
+                 });
+             }
         });
 
         function setupJobsPageListeners() {
@@ -477,9 +580,31 @@
     document.getElementById('resumeLink').value = '';
 }
 
-        function closeApplicationModal() {
+function closeApplicationModal() {
+            // Hide Modal
             document.getElementById('applicationModal').style.display = 'none';
             window.currentJobId = null;
+
+            // 1. Reset the actual form inputs (clears text and selected file)
+            const form = document.getElementById('applicationForm');
+            if (form) form.reset();
+
+            // 2. Reset the Custom File UI (the text and X button)
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            const removeBtn = document.getElementById('removeFileBtn');
+            
+            if (fileNameDisplay) {
+                fileNameDisplay.textContent = 'No file selected';
+                fileNameDisplay.classList.remove('has-file');
+            }
+            if (removeBtn) {
+                removeBtn.style.display = 'none';
+            }
+
+            // 3. Reset the toggle view back to "Link" (default)
+            if (typeof toggleSubmissionMethod === 'function') {
+                toggleSubmissionMethod('link');
+            }
         }
 
         function closeJobDetailsModal() {

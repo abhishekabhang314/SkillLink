@@ -1151,11 +1151,44 @@ async function handleJobApplication(event) {
         if (!window.currentJobId) {
             throw new Error('No job selected');
         }
-        
-        const resumeLink = document.getElementById('resumeLink').value.trim();
-        
-        if (!resumeLink) {
-            throw new Error('Resume link is required');
+
+        // Determine submission type
+        const isFile = document.querySelector('input[name="submissionType"][value="file"]').checked;
+        let resumeLink = '';
+
+        if (isFile) {
+            const fileInput = document.getElementById('resumeFile');
+            const file = fileInput.files[0];
+            
+            if (!file) throw new Error('Please select a file to upload');
+
+            // -----------------------------------------------------------
+            // NOTE: Ideally, here you would upload 'file' to IPFS/AWS
+            // const ipfsHash = await uploadToIPFS(file);
+            // resumeLink = `https://ipfs.io/ipfs/${ipfsHash}`;
+            // -----------------------------------------------------------
+
+            // FOR NOW: Since we don't have an IPFS server, we will alert the user
+            // and act as if we can't process files yet.
+            alert("⚠️ Demo Mode: File upload requires an IPFS node or Cloud Server.\n\nPlease select the 'Link' option and paste a Google Drive or Portfolio link for this demo.");
+            
+            // Return here to stop execution so they can switch to Link
+            return; 
+
+        } else {
+            // Handle Link Submission
+            resumeLink = document.getElementById('resumeLink').value.trim();
+            if (!resumeLink) throw new Error('Resume link is required');
+            
+            // Simple URL validation
+            try {
+                 // Basic check if it looks like a URL
+                 if(!resumeLink.startsWith('http')) {
+                     throw new Error('URL must start with http:// or https://');
+                 }
+            } catch (e) {
+                throw new Error('Please enter a valid URL');
+            }
         }
         
         // Disable submit button
@@ -1180,8 +1213,10 @@ async function handleJobApplication(event) {
         }
         
     } catch (error) {
-        alert(error.message);
-        console.error('Job application error:', error);
+        if (!error.message.includes('Demo Mode')) { // Don't alert if we already alerted for Demo Mode
+            alert(error.message);
+            console.error('Job application error:', error);
+        }
     } finally {
         // Re-enable submit button
         submitButton.disabled = false;
